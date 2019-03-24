@@ -1,0 +1,92 @@
+$blue: #0000ff;
+$light-blue: #00ffff;
+$red: #ff0000;
+$green: #00ff00;
+$yellow: #ffff00;
+$white: #ffffff;
+$black: #000000;
+
+:root {
+  --isMobile: 0;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: black;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+body {
+  color: $blue;
+}
+
+#global-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+#game-stage-wrapper {
+  height: 100vh;
+  overflow: hidden;
+
+  .isMobile & {
+    max-width: 80vw;
+    flex: 2;
+  }
+
+}
+
+#game-stage {
+  height: 100vh;
+}
+
+.control-panel {
+
+  text-align: center;
+  background: green;
+
+  .isMobile & {
+    display: inline-block;
+    flex: 0.5;
+    min-width: 5vw;
+  }
+
+}
+
+.control-button {
+  height: 50vh;
+
+  &:first-of-type {
+    border-bottom: $white solid thin;
+  }
+
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer */
+  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+  
+}
+
+#rotation-error {
+
+}
+
+@media only screen and (orientation:portrait){
+  #global-wrapper { 
+    visibility: hidden;
+    display: none; 
+  }
+  #rotation-error { display: block; }
+}
+@media only screen and (orientation:landscape){
+  #rotation-error { 
+    display: none; 
+    visibility: hidden;
+  }
+}

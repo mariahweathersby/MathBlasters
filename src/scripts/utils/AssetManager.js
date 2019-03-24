@@ -1,0 +1,1 @@
+// https://github.com/mattdesl/threejs-app/blob/master/src/util/AssetManager.js

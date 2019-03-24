@@ -1,0 +1,126 @@
+//https://jsfiddle.net/f2Lommf5/14006/
+import '../styles/index.scss';
+
+import * as THREE from 'three';
+
+import SceneManager from './three/SceneManager';
+import ClientManager from './client/ClientManager';
+import AppManager from './AppManager';
+
+/*
+const isMobileDevice = () => {
+    return (
+        (typeof window.orientation !== "undefined") || 
+        (navigator.userAgent.indexOf('IEMobile') !== -1)
+    );
+};
+let isMobile = isMobileDevice();
+
+let root = document.documentElement;
+if (isMobile) { root.classList.add('isMobile') } 
+
+let sceneManager = new SceneManager(isMobile);
+sceneManager.preload();
+sceneManager.sceneStart();
+*/
+let appManager = new AppManager();
+appManager.init();
+
+
+
+/*
+const bindEventListeners = () => {
+
+    let isMobile = isMobileDevice();
+
+    document.addEventListener( 'resize', onResize, false );
+
+    if (isMobile) {
+
+        // window.addEventListener( 
+        //     'deviceorientation', 
+        //     onDeviceOrientationChange, 
+        //     false 
+        // );
+        // window.addEventListener( 
+        //     'orientationchange', 
+        //     onScreenOrientationChange, 
+        //     false 
+        // );  
+    } else {
+        document.addEventListener( 'mousemove', onMouseMove, false );
+        document.addEventListener( 'keydown', onKeyDown, false );
+    }
+
+}
+
+const onResize = (e) => {
+    e.preventDefault();
+    sceneManager.onResize(e);
+}
+
+const onMouseMove = (e) => {
+    e.preventDefault();
+    sceneManager.onMouseMove(e);
+}
+
+
+const onKeyDown = (e) => {
+    e.preventDefault();
+    sceneManager.onKeyDown(e);
+}
+*/
+
+/* ==== CLIENT CODE ==== */
+/*
+let controls = document.getElementsByClassName("control-button");
+Array.from(controls).forEach(function(element) {
+    let onPressHoldInterval = null;
+
+    element.addEventListener('click', onKeyDown, false);
+    // element.addEventListener('mousedown', function(event) {
+    //     onPressHoldInterval = setInterval(() => onKeyDown(event), 300);
+    // });
+
+    element.addEventListener('touchstart', function(event) {
+        onPressHoldInterval = setInterval(() => onKeyDown(event), 300);
+    });
+
+    element.addEventListener('mouseup', function(e) {
+        clearTimeout(onPressHoldInterval);
+    });
+    
+    element.addEventListener('touchcancel', function(event) {
+        clearTimeout(onPressHoldInterval);
+    });
+
+    element.addEventListener('touchend', function(event) {
+        clearTimeout(onPressHoldInterval);
+    });
+          
+});
+
+let gameStage = document.getElementById("game-stage-wrapper");
+gameStage.addEventListener('click', sceneManager.updateRaycaster, false)
+*/
+/* ==== CLIENT CODE ==== */
+
+/*
+let render = () => {
+    requestAnimationFrame(render);
+    sceneManager.update();
+}
+
+bindEventListeners();
+render();
+
+//https://github.com/mrdoob/three.js/blob/master/examples/webgl_raycast_sprite.html
+const getIntersects = ( x, y ) => {
+
+    x = ( x / window.innerWidth ) * 2 - 1;
+    y = - ( y / window.innerHeight ) * 2 + 1;
+    mouseVector.set( x, y, 0.5 );
+    raycaster.setFromCamera( mouseVector, camera );
+    return raycaster.intersectObject( canCollide, true );
+}
+*/

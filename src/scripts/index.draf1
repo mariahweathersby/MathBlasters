@@ -1,0 +1,194 @@
+//https://jsfiddle.net/f2Lommf5/14006/
+import '../styles/index.scss';
+
+import * as THREE from 'three';
+
+import GameFloor from './gameObjects/GameFloor';
+import TowerAlpha from './gameObjects/TowerAlpha';
+import Meteor from './gameObjects/Meteor';
+
+let camera,
+    canCollide = [],
+    cube,
+    mouseVector,
+    raycaster,
+    renderer,
+    scene;
+
+let mouse = new THREE.Vector2(),
+    target = new THREE.Vector2(),
+    windowHalf = new THREE.Vector2( 
+        window.innerWidth / 2, 
+        window.innerHeight / 2 
+    );
+
+const onResize = () => {
+    window.addEventListener('resize', function() {
+        const WINDOW_WIDTH = window.innerWidth,
+            WINDOW_HEIGHT = window.innerHeight,
+            ASPECT_RATIO =  WINDOW_WIDTH / WINDOW_HEIGHT;
+
+        renderer.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        camera.aspect = ASPECT_RATIO;
+        camera.updateProjectionMatrix();
+      });
+};
+
+const onMouseMove = (e) => {
+    e.preventDefault();
+	mouse.x = ( event.clientX - windowHalf.x );
+    mouse.y = ( event.clientY - windowHalf.x );
+    
+    cameraMouseRotation();
+    console.log("event: ", event)
+
+    var intersects = getIntersects( event.layerX, event.layerY );
+    console.log("intersect: ", intersects)
+
+
+}
+
+
+
+const onKeyDown = (e) => {
+    e.preventDefault();
+
+    updatePosition(e, cube);
+
+}
+
+const cameraMouseRotation = () => {
+    target.x = ( 1 - mouse.x ) * 0.002;
+    target.y = ( 1 - mouse.y ) * 0.002;
+    
+    camera.rotation.x += 0.05 * ( target.y - camera.rotation.x );
+    camera.rotation.y += 0.05 * ( target.x - camera.rotation.y );
+
+}
+
+const updatePosition = (e, gameObject) => {
+    let keyCode = event.which;
+
+    if (keyCode == 37) {
+        /* LEFT */ gameObject.position.x -= 0.05;
+    } else if (keyCode == 39) {
+        /* RIGHT */ gameObject.position.x += 0.05;
+    }
+
+}
+
+//https://github.com/mrdoob/three.js/blob/master/examples/webgl_raycast_sprite.html
+const getIntersects = ( x, y ) => {
+
+    x = ( x / window.innerWidth ) * 2 - 1;
+    y = - ( y / window.innerHeight ) * 2 + 1;
+    mouseVector.set( x, y, 0.5 );
+    raycaster.setFromCamera( mouseVector, camera );
+    return raycaster.intersectObject( canCollide, true );
+}
+
+const init = () => {
+    const FOV = 45,
+        WINDOW_WIDTH = window.innerWidth,
+        WINDOW_HEIGHT = window.innerHeight, 
+        ASPECT_RATIO =  WINDOW_WIDTH / WINDOW_HEIGHT,
+        NEAR = 0.1,
+        FAR = 1000;
+    
+    document.addEventListener( 'resize', onResize, false );
+    document.addEventListener( 'mousemove', onMouseMove, false );
+    document.addEventListener( 'keydown', onKeyDown, false );
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(FOV, ASPECT_RATIO, NEAR, FAR);
+    camera.position.set(0, 0, 50);
+
+    scene.add(camera);
+
+    renderer = new THREE.WebGLRenderer({
+        // alpha: true,
+        //why
+        antialias: true 
+    });
+    renderer.setSize( WINDOW_WIDTH, WINDOW_HEIGHT);
+    renderer.setClearColor(0x000000, 1);
+
+    raycaster = new THREE.Raycaster()
+    mouseVector = new THREE.Vector3();
+
+
+    document.body.appendChild( renderer.domElement );
+
+    // geometry over buffer geometry
+    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    cube = new THREE.Mesh( geometry, material );
+    cube.position.z = 30;
+    cube.position.x = 0;
+    
+
+    let gameFloor = new GameFloor();
+    gameFloor.rotateX(90);
+    
+    let towerGroupA = createGroup(3, 6);
+    towerGroupA.position.x = -6;
+    towerGroupA.position.z = 10;
+    canCollide.push(towerGroupA)
+
+    let towerGroupB = createGroup(3, 8);
+    towerGroupB.position.x = -8;
+    towerGroupB.position.z = -40;
+
+    let towerGroupC = createGroup(3, 6);
+    towerGroupC.position.x = -6;
+    towerGroupC.position.z = -80;
+
+    let meteor = new Meteor();
+    meteor.position.z = 60;
+    meteor.position.x = 4;
+    scene.add(meteor);
+    canCollide.push(meteor)
+
+    console.log("canCollide: ", canCollide)
+
+
+    //gameFloor.add(towerGroupA);
+    cube.add(camera);
+    scene.add(towerGroupA);
+    scene.add(towerGroupB);
+    scene.add(towerGroupC);
+    scene.add(cube);
+
+    //scene.add( gameFloor );
+
+
+};
+
+const createGroup = (amount, offsetX = 1) => {
+    let group = new THREE.Group();
+
+    for( let i = 0; i < amount; i++ ){
+        let tower = new TowerAlpha();
+        tower.position.x = i * offsetX;
+
+        group.add( tower );
+
+    }
+
+    return group;
+
+}
+
+
+
+const animate = () => {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+
+    //cube.position.z -= 0.2;
+
+};
+
+init();
+animate();
+
