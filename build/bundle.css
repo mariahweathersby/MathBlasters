@@ -18,7 +18,8 @@ body {
 
 #game-stage-wrapper {
   height: 100vh;
-  overflow: hidden; }
+  overflow: hidden;
+  width: 100vw; }
   .isMobile #game-stage-wrapper {
     max-width: 80vw;
     flex: 2; }

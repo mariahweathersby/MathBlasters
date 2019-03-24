@@ -8,6 +8,9 @@ import ClientManager from './client/ClientManager';
 export default class AppManager {
     constructor() {
         this.isMobile = this.isMobileDevice();
+
+        console.log("ismobile: ", this.isMobile)
+
         this.sceneManager = new SceneManager(this.isMobile)
         this.clientManager = new ClientManager(this.isMobile);
 
@@ -54,8 +57,7 @@ export default class AppManager {
 
     isMobileDevice = () => {
         return (
-            (typeof window.orientation !== "undefined") || 
-            (navigator.userAgent.indexOf('IEMobile') !== -1)
+            /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
         );
     };
 
