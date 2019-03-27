@@ -40,9 +40,7 @@ export default class SceneManager {
       this.userData = config.userData;
       this.userData.mouse = new THREE.Vector2();
 
-      // ==== REMOVE?? ==== //
       this.intersects = [];
-      // ==== REMOVE?? ==== //
 
 
   }
