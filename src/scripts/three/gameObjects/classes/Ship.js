@@ -39,22 +39,26 @@ export default class Ship extends THREE.Mesh {
     switch(keyCode){
       case 'ArrowUp':
         if ( this.position.y <= verticalBoundary )
-          this.position.y += bankSpeed;
+          // this.position.y += bankSpeed;
+          this.rotation.x -= Math.PI / 2
         break;
 
       case 'ArrowDown':
         if ( this.position.y >= -Math.abs(verticalBoundary) )
-          this.position.y -= bankSpeed;
+          // this.position.y -= bankSpeed;
+          this.rotation.x += Math.PI / 2
         break;
 
       case 'ArrowRight':
       if ( this.position.x <= horizontalBoundary )
-        this.position.x += bankSpeed;
+        // this.position.x += bankSpeed;
+        this.rotation.y -= Math.PI / 2
         break;
 
       case 'ArrowLeft':
         if ( this.position.x >= -Math.abs(horizontalBoundary) )
-          this.position.x -= bankSpeed;
+          // this.position.x -= bankSpeed;
+          this.rotation.y += Math.PI / 2
         break;
 
     }

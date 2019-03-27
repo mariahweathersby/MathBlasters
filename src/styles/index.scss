@@ -1,6 +1,24 @@
+@import "_reset.scss"; 
+@import "_animations.scss"; 
+
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+@font-face {
+  font-family: 'Nasalization Rg';
+  src: url('../assets/fonts/nasalization/NasalizationRg-Regular.eot');
+  src: url('../assets/fonts/nasalization/NasalizationRg-Regular.eot?#iefix') format('embedded-opentype'),
+      url('../assets/fonts/nasalization/NasalizationRg-Regular.woff2') format('woff2'),
+      url('../assets/fonts/nasalization/NasalizationRg-Regular.woff') format('woff'),
+      url('../assets/fonts/nasalization/nasalization-rg.ttf') format('truetype'),
+      url('../assets/fonts/nasalization/NasalizationRg-Regular.svg#NasalizationRg-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 $blue: #0000ff;
 $light-blue: #00ffff;
-$red: #ff0000;
+$red: rgb(255, 0, 0);
+$red-dark: rgb(182, 11, 11);
 $green: #00ff00;
 $yellow: #ffff00;
 $white: #ffffff;
@@ -16,54 +34,367 @@ html, body {
   padding: 0;
   overflow: hidden;
   background: black;
+  font-family: 'Nasalization Rg', 'Press Start 2P', cursive;
 
   height: 100vh;
   width: 100vw;
 }
 
 body {
-  color: $blue;
+  // background: rgba(0,0,0,0.5);
+  // background: url('../assets/images/starField.png');
+
+  &::after {
+    content: "";
+    background: url('../assets/images/starField.png');
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+  }
+
+}
+
+#intro-page-wrapper {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  background-color: rgba(0,0,0,0);
+  display: flex;
+  flex-direction: column;
+  z-index: -10;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.00;
+  visibility: hidden;
+
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
+
+  &.active {
+    opacity: 1.00;
+    visibility: visible;
+    z-index: 60;
+  }
+
+  #titles {
+    h1 {
+      color: white;
+      font-size: 5em;
+      text-shadow: 0 0 7.5px $white;
+      span {
+        font-size: .6em;
+        display: block;
+        text-shadow: 0 0 7.5px $white;        
+      }
+
+      .isMobile & {
+        font-size: 3.5em;
+      }
+
+    }
+    h4 {
+      color: $black;
+      margin-top: .5em;
+      font-size: 1.75em;
+      padding: .35em;
+      background: $green;
+      border-radius: 5px;
+
+    }
+
+    margin-bottom: 2.5em;
+
+  }
+
+  #instructions-slider {
+    background: $blue;
+    width: 50vw;
+    height: 20vh;
+    position: relative;
+    color: $white;
+    margin-bottom: .75em;
+    // overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: -.75em; right: 0; top: 0; bottom: 0;
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      padding: .5em;
+      background: rgba(0,0,0,0);
+      border: $blue thick solid;
+      border-radius: 5px;
+    }
+
+    li {
+      position: absolute;
+      background: $blue;
+      width: 100%;
+      height: 100%;
+    }
+
+  }
+
+
+  #start.btn {
+    background: $red;
+    border: $red solid thin;
+    border-radius: 5px;
+    font-size: 1em;
+    color: $white;
+  }
+
+}
+
+#math-viewport {
+  height: 15vh;
+  z-index: 50;
+  top: -15vh; left: 0; right: 0;
+  position: fixed;
+  margin: auto;
+
+  border: $green solid 2.5px;
+  border-radius: 0 0 25px 25px;
+  background: rgba(0,0,0,0.75);
+  width: 80vw;
+  overflow: hidden;
+  display: flex;
+
+  -webkit-transition: top .5s;
+  transition: top .5s;
+
+  &.active {
+    top: -3.5px;
+  }
+
+  h2 {
+    font-size: 3em;
+  }
+  
+  .isMobile & {
+    height: 15vh;
+    width: 60vw;
+
+    span {
+      font-size: .65em;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+  }
+
+  .incorrect & { 
+    border-color: $red;
+  }
+
+  #score-keeper-wrapper{
+    text-align: center;
+
+    #score-keeper {
+      color: $red;
+      text-shadow: 0 0 7.5px $red;
+    }
+
+    span {
+      color: $blue;
+    }
+
+  }
+
+  #current-problem-wrapper {
+    flex: 1.5;
+    border-right: solid $green thin;
+    border-left: solid $green thin;
+
+    #current-problem {
+      color: $white;
+      text-align: center;
+      font-size: 3.25em;
+      text-shadow: 0 0 7.5px $white;
+      vertical-align: middle;
+
+        .isMobile & { 
+          font-size: 2em;
+        }
+
+        .incorrect & {
+          color: $red;
+          text-shadow: 0 0 7.5px $red;
+        }
+      
+    }
+  }
+
+  #timer-wrapper{
+    text-align: center;
+    
+    span {
+      color: $yellow;
+    }
+    
+    #timer {
+      color: $green;
+      text-shadow: 0 0 7.5px $green;
+      vertical-align: middle;
+  
+        .incorrect & {
+          color: $red;
+          text-shadow: 0 0 7.5px $red;
+        }
+
+    }
+  }
+
+  div {
+    flex: 1;
+    display: inline-block;
+    margin: auto;
+  }
+
+}
+
+#rotation-error {
+  position: absolute;
+  height: 60vh;
+  width: 60vw;
+  background: $black;
+  z-index: 100;
+  color: $white;
+  font-size: 1.25em;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20vh 20vw;
+
+  #orientation-warning {
+    background-color: $yellow;
+    background-image: url('../assets/images/phone.png');
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    height: 125px;
+    width: 125px;
+    border-radius: 200px;
+    margin-bottom: 2em;
+  }
+
 }
 
 #global-wrapper {
-  display: flex;
-  flex-direction: row;
-}
-
-#game-stage-wrapper {
   height: 100vh;
-  overflow: hidden;
   width: 100vw;
+  
+  z-index: 10;
 
-  .isMobile & {
-    max-width: 80vw;
-    flex: 2;
+  .control-panel {
+    position: fixed;
+    height: 100vh;
+    width: 10%;
+    background: rgba(255,0,0,1);
+    top: 0;
+    z-index: 30;
+    visibility: hidden;
+    
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+
+      .isMobile & {
+        visibility: visible;
+      }
+
   }
 
-}
-
-#game-stage {
-  height: 100vh;
-}
-
-.control-panel {
-
-  text-align: center;
-  background: green;
-
-  .isMobile & {
+  #game-stage-wrapper {
+    width: 100%;
+    height: 100vh;
     display: inline-block;
-    flex: 0.5;
-    min-width: 5vw;
+    overflow: hidden;
+    position: relative;
+    
+    z-index: 20;
+
+    #user-feedback-display {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      visibility: hidden;
+      opacity: 0.5;
+
+      &.incorrect {
+        background: $red;
+        visibility: visible;
+      }
+
+      &.correct {
+        background: $green;
+        visibility: visible;
+      }
+
+    }
+
+    #crosshair {
+      position: absolute;
+      height: 5em;
+      width: 5em;
+      margin: auto;
+      top: 0; left: 0; right : 0; bottom: 0;
+      background-image: url('../assets/images/001-irregular-cross-hair.png');
+      background-size: contain;
+      visibility: hidden;
+      
+      &.active {
+        visibility: visible;
+
+      }
+
+      // background: url('../assets/images/001-irregular-cross-hair.png');
+      // background-repeat: no-repeat;
+      // background-attachment: fixed;
+      // -o-background-size: contain;
+      // -moz-background-size: contain;
+      // -webkit-background-size: contain;
+
+      .isMobile & {
+        height: 3.5em;
+        width: 3.5em;
+      }
+
+    }
+
+
   }
 
 }
+
 
 .control-button {
   height: 50vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 
   &:first-of-type {
-    border-bottom: $white solid thin;
+    border-bottom: $red-dark solid thick;
   }
 
   -moz-user-select: none; /* Firefox */
@@ -71,19 +402,80 @@ body {
   -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
   -webkit-user-select: none; /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+
+  .inset {
+
+    height: 50px;
+    width: 50px;
+    background-color: $red-dark;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    font-size: 2em;
+    text-align: center;
+    color: $red;
+
+  }
   
 }
 
-#rotation-error {
+footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  width: 80vw;
+  margin: auto;
+  color: black;
+  text-align: center;
+  height: 10vh;
+  overflow: visible;
+  z-index: 50;
 
+
+  &::after, &::before {
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: $black;
+
+  }
+
+  &::after {
+    border: $yellow solid 2.5px;
+    transform: skew(20deg);
+    left: 0;
+    right: 12.5px;
+    bottom: 10px;
+    height: 100%;
+  }
+
+  &::before {
+    right: 0px;
+    bottom: 0px;
+    border: $yellow solid 2.5px;
+    transform: skew(20deg);
+
+
+  }
+
+
+
+  .isMobile & {
+    width: 70vw;
+  }
+
+  
 }
+
 
 @media only screen and (orientation:portrait){
   #global-wrapper { 
     visibility: hidden;
     display: none; 
   }
-  #rotation-error { display: block; }
 }
 @media only screen and (orientation:landscape){
   #rotation-error { 

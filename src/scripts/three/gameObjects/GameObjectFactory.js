@@ -6,8 +6,9 @@ import GameFloor from './classes/GameFloor';
 import Meteor from './classes/Meteor';
 import Ship from './classes/Ship';
 import TowerAlpha from './classes/TowerAlpha';
+import MeteorField from './classes/MeteorField'
 
-const GameObjectFactory = (gameObjType, config = null, amount = 1, offsetX = 0) => {
+const GameObjectFactory = (gameObjType, config = null, amount = 1, offsetX = 0, value = null) => {
 
     const isConfig = config ? config : "";
 
@@ -25,21 +26,39 @@ const GameObjectFactory = (gameObjType, config = null, amount = 1, offsetX = 0) 
     
     }
 
+    const createMeteorGroup = (amount, offsetX) => {
+      let meteors = [];
+      for( let i = 0; i < amount; i++ ){
+          let meteorMesh = new Meteor();
+          meteorMesh.position.x = i * offsetX;
+          meteors.push( meteorMesh );
+      }
+
+      return meteors;
+    
+    }
+
     switch(gameObjType) {
-      // case gameObjectType.GAME_FLOOR:
-      //   return new GameFloor(config);
-      //   break;
+      case gameObjectType.GAME_FLOOR:
+        return new GameFloor(isConfig);
+        break;
 
       case gameObjectType.METEOR:
         if (amount == 1){
           return new Meteor(isConfig);
+          console.log("newmeteor: ")
         } else {
           return createGroup(Meteor, amount, offsetX);
         };
         break;   
 
+      case gameObjectType.METEOR_FIELD:
+        return new MeteorField(
+          createMeteorGroup(amount, offsetX),
+          isConfig
+        );
         break;  
-        
+
       case gameObjectType.SHIP:
         return new Ship(isConfig);
         break;    
